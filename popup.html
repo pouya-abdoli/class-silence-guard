@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Class Silence Guard</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-group">
+        <span id="statusDot" class="dot dot-off"></span>
+        <h1>Class Silence Guard</h1>
+      </div>
+    </header>
+
+    <canvas id="waveform" width="320" height="90"></canvas>
+
+    <div class="status-row">
+      <span id="statusText" class="status-text">Not monitoring</span>
+    </div>
+
+    <div class="timer-row">
+      <div class="timer-label">
+        <span>Silence</span>
+        <span><span id="silenceTime">0</span>s / 120s</span>
+      </div>
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <button id="toggleBtn" class="btn btn-start">Start Monitoring</button>
+
+    <p id="errorMsg" class="error-msg"></p>
+    <p class="hint">Detection keeps running after you close this popup.</p>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
