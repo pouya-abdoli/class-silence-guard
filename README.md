@@ -1,111 +1,98 @@
-# 🛑 Class Silence Guard
+# 🔇 Class Silence Guard
 
-> Automatically closes Chrome after 2 minutes of continuous silence in your online class tab.
+**Class Silence Guard** is a Chrome extension that monitors audio in your class tab and automatically closes Chrome after 2 minutes of continuous silence — useful for online lectures that end abruptly or run long after the professor has stopped speaking.
 
 ---
 
-## 📦 Install (Unpacked / Dev Mode)
+## ✨ Features
 
+- 🎙️ Real-time tab audio monitoring via amplitude-based silence detection
+- 📊 Live waveform visualization — dynamic when sound is detected, flat during silence
+- ⏱️ Color-coded silence timer with a 120-second countdown
+- 🔒 No recording or storage — audio is analyzed in real time only, never saved
+
+---
+
+## 📦 Download the Extension
+
+First, download the latest version of the extension as a ZIP file:
+
+[⬇️**Download the latest version (ZIP)**](https://github.com/pouya-abdoli/class-silence-guard/releases/latest/download/class-silence-guard.zip)
+> Once downloaded, extract the ZIP folder and follow the installation steps below.
+
+---
+
+## 📦 Installation (Unpacked / Developer Mode)
 1. Open `chrome://extensions`
-2. Toggle **Developer mode** (top-right corner)
+2. Enable **Developer mode** (top-right toggle)
 3. Click **Load unpacked**
 4. Select this folder (`class-silence-guard/`)
 5. 📌 Pin the extension to your toolbar for quick access
 
 ---
 
-## 🚀 How to Use
+## 🚀 Usage
 
 1. Open your class tab (Zoom, Google Meet, Teams, YouTube, etc.)
 2. Make sure it's the **active tab** in the active window
-3. Click the extension icon → **Start Monitoring**
-4. 🔔 Grant tab-capture permission when Chrome asks (first time only)
-5. Sit back and relax — monitoring runs in the background 📊
-
-> 💡 Reopen the popup anytime to check current status
+3. Click the extension icon, then select **Start Monitoring**
+4. Grant the tab-capture permission when prompted (first run only)
+5. Monitoring continues in the background — reopen the popup anytime to check status
 
 ---
 
-## 🧪 Testing (Without Waiting 2 Minutes)
+## 🧪 Testing
 
-Temporarily lower these values in `offscreen.js`:
+To test without waiting the full 2 minutes, temporarily lower these values in `offscreen.js`:
 
 ```js
 SILENCE_LIMIT_MS = 10000  // 10 seconds
 WARNING_MS = 5000         // 5 seconds
 ```
 
-Then set them back to `120000` / `10000` for real use.
+Restore them to `120000` / `110000` before real use.
 
 ### 🎵 Simulating Audio States
 
-| Action | Result |
-|--------|--------|
-| Pause a video / mute tab | ✅ Detects silence |
-| Play music or video | 🔄 Resets timer |
-| Quiet lecturer / background noise | ⚙️ Adjust `SILENCE_THRESHOLD` (default `0.02`) |
+| Action                            | Result                                        |
+|------------------------------------|------------------------------------------------|
+| Pause a video / mute the tab       | ✅ Silence detected                             |
+| Play music or video                | 🔄 Timer resets                                 |
+| Quiet lecturer / background noise  | ⚙️ Adjust `SILENCE_THRESHOLD` (default `0.02`)  |
 
 ---
 
-## ⚠️ Known Pitfalls
+## 🔒 Privacy
 
-### 🚫 Chrome Can't Truly "Quit"
+Class Silence Guard performs all audio analysis **locally and in real time**. No audio is recorded, saved, or transmitted anywhere — the extension only measures amplitude to determine sound vs. silence, then discards each sample immediately.
 
-There's no `chrome.quit()` API. This extension closes all windows via `chrome.windows.remove()`:
+---
 
-| OS | Behavior |
-|----|----------|
-| 🪟 Windows / 🐧 Linux | Terminates Chrome process *(unless "Continue running background apps" is enabled)* |
-| 🍎 macOS | App stays running in Dock (no windows) — normal macOS behavior |
+## 🛠️ Customization
 
-### 🎤 Tab Must Be Active
+| Setting             | Location       | Purpose                                         |
+|-----------------------|----------------|--------------------------------------------------|
+| `SILENCE_THRESHOLD`   | `offscreen.js` | Amplitude cutoff for silence detection            |
+| `SILENCE_LIMIT_MS`    | `offscreen.js` | Total silence duration before Chrome closes       |
+| `WARNING_MS`          | `offscreen.js` | When the cancellable warning notification fires   |
 
-- You must click **Start Monitoring** while the class tab is focused
-- Can't auto-start or capture background tabs
-
-### 🔇 Muting Side Effect
-
-Capturing a tab's audio stream silences it *unless* reconnected. This extension **does** reconnect via `audioContext.destination` — so you'll still hear your class 🎧
-
-### 📌 One Tab at a Time
-
-Only captures a single target tab per session. Stop and restart on the new tab if you switch.
-
-### 🔄 rAF Throttling
-
-Hidden pages throttle `requestAnimationFrame`. This extension uses `setInterval` instead — don't switch to rAF or detection will stall!
-
-### 💤 Service Worker Eviction
-
-MV3 service workers can sleep after ~30s inactivity. This extension uses event-driven message listeners (not polling), so it wakes up correctly.
-
-### 🔔 System Sounds Don't Interfere
-
-tabCapture only captures the **target tab's audio**, not system-wide notifications.
-
-### 💥 All Windows Close!
-
-This forcibly closes **all** your Chrome windows — including unrelated work. The 10-second warning notification exists to prevent accidental closure mid-lecture.
+For debugging, inspect the service worker console via `chrome://extensions` → **service worker** link under the extension.
 
 ---
 
 ## 📁 File Structure
 
-| File | Role |
-|------|------|
-| `manifest.json` | MV3 manifest & permissions |
-| `background.js` | Service worker — orchestration, notifications, window closing |
-| `offscreen.html` / `offscreen.js` | Hidden document doing AudioContext/AnalyserNode work |
-| `popup.html` / `popup.css` / `popup.js` | Visible UI — waveform, timer, start/stop button |
+| File                                   | Role                                                            |
+|------------------------------------------|---------------------------------------------------------------------|
+| `manifest.json`                        | MV3 manifest and permissions                                     |
+| `background.js`                        | Service worker — orchestration, notifications, window closing    |
+| `offscreen.html` / `offscreen.js`      | Hidden document running the AudioContext/AnalyserNode analysis   |
+| `popup.html` / `popup.css` / `popup.js`| Visible UI — waveform, timer, start/stop control                  |
 
 ---
 
-## 🛠️ Customization Tips
+## 📄 License
 
-- **Adjust sensitivity:** Modify `SILENCE_THRESHOLD` in `offscreen.js`
-- **Change timeout:** Modify `SILENCE_LIMIT_MS` and `WARNING_MS`
-- **Add logging:** Check service worker console for debugging
-
----
+MIT — feel free to fork, modify, and use for your own classes. 
 
 **Made with ❤️ for sleepy students everywhere**
