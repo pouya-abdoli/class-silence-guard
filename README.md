@@ -29,35 +29,9 @@ The progress bar changes color based on the **percentage of silence elapsed**, n
 
 ## 📸 Screenshots
 
-### 🔊 Sound Detected (Active)
-
-![Sound Detected](images/sound-detected.png)
-
-*The waveform is active and the timer is reset.*
-
----
-
-### 🟢 Silence Just Started (Green Timer)
-
-![Silence Start](images/silence-start.png)
-
-*The waveform is flat, and the timer has just started counting.*
-
----
-
-### 🟡 Silence Warning (Yellow Timer)
-
-![Silence Warning](images/silence-warning.png)
-
-*The timer has reached 40% of the limit — silence is ongoing.*
-
----
-
-### 🔴 Silence Critical (Red Timer)
-
-![Silence Critical](images/silence-critical.png)
-
-*The timer has reached 80% of the limit — Chrome will close soon.*
+<div align="center">
+  <img src="images/screenshots-grid.png" width="600" alt="UI Screenshots">
+</div>
 
 ---
 
