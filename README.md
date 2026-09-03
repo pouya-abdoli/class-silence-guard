@@ -13,6 +13,54 @@
 
 ---
 
+## 🎨 Timer Color Logic (Percentage-Based)
+
+The progress bar changes color based on the **percentage of silence elapsed**, not fixed time values. The default silence limit is **120 seconds** (2 minutes). The color ranges are calculated automatically as a percentage of `SILENCE_LIMIT_MS`.
+
+| Color | Percentage Range | Exact Time Range (Default 120s) |
+|-------|------------------|---------------------------------|
+| 🟢 **Green** | 0% – 39% | 0s – 47s |
+| 🟡 **Yellow** | 40% – 79% | 48s – 95s |
+| 🔴 **Red** | 80% – 100% | 96s – 120s |
+
+> **Note:** These times are based on the default `SILENCE_LIMIT_MS = 120000`. If you change the limit (e.g., to 60s), the colors automatically adjust proportionally.
+
+---
+
+## 📸 Screenshots
+
+### 🔊 Sound Detected (Active)
+
+![Sound Detected](images/sound-detected.png)
+
+*The waveform is active and the timer is reset.*
+
+---
+
+### 🟢 Silence Just Started (Green Timer)
+
+![Silence Start](images/silence-start.png)
+
+*The waveform is flat, and the timer has just started counting.*
+
+---
+
+### 🟡 Silence Warning (Yellow Timer)
+
+![Silence Warning](images/silence-warning.png)
+
+*The timer has reached 40% of the limit — silence is ongoing.*
+
+---
+
+### 🔴 Silence Critical (Red Timer)
+
+![Silence Critical](images/silence-critical.png)
+
+*The timer has reached 80% of the limit — Chrome will close soon.*
+
+---
+
 ## 📦 Download the Extension
 
 First, download the latest version of the extension as a ZIP file:
